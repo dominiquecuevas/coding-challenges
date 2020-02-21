@@ -12,6 +12,18 @@ def contains_duplicates(lst):
             return True
     return False
 
+def contains_duplicates_sets(lst):
+    """
+    >>> contains_duplicates_sets([1,2,3,1])
+    True
+    >>> contains_duplicates_sets([1,2,3,4])
+    False
+    """
+    lst_set = set(lst)
+    if len(lst_set) != len(lst):
+        return True
+    return False
+
 if __name__ == "__main__":
     import doctest
     result = doctest.testmod()
