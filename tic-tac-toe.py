@@ -18,48 +18,82 @@ class TicTacToe:
     The first player always plays "X".
 
     >>> board = ["O  ", "   ", "   "]
-    >>> game = TicTacToe(board)
-    >>> game.number_of_x()
-    >>> game.is_valid
+    >>> game = TicTacToe()
+    >>> game.validTicTacToe(board)
     False
 
     Players take turns making moves.
     >>> board = ["XOX", " X ", "   "]
-    >>> game = TicTacToe(board)
-    >>> game.number_of_x()
-    >>> game.is_valid
+    >>> game.validTicTacToe(board)
     False
 
     >>> board = ["XXX", "   ", "OOO"]
-    >>> game = TicTacToe(board)
-    >>> game.number_of_x()
-    >>> game.is_valid
+    >>> game.validTicTacToe(board)
     False
 
     >>> board = ["XOX", "O O", "XOX"]
-    >>> game = TicTacToe(board)
-    >>> game.number_of_x()
-    >>> game.is_valid
+    >>> game.validTicTacToe(board)
     True
+
+    >>> board = ["XXX","OOX","OOX"]
+    >>> game.validTicTacToe(board)
+    True
+
+    >>> board = ["XXX","XOO","OO "]
+    >>> game.validTicTacToe(board)
+    False
+
+    >>> board = ["OXX","XOX","OXO"]
+    >>> game.validTicTacToe(board)
+    False
     '''
 
-    def __init__(self, board):
-        self.is_valid = True
-        self.count_dict = self.get_dict(board)
-
-    def get_dict(self, board):
-        turn_count = {}
+    def count_dict(self, board):
+        mark_dict = {}
         for row in board:
             for col in row:
-                turn_count[col] = turn_count.get(col, 0) + 1
-        return turn_count
-        
-    def number_of_x(self):
-        if not (self.count_dict.get('X', 0) - self.count_dict.get('O', 0) >= 0 and self.count_dict.get('X', 0) - self.count_dict.get('O', 0) <= 1):
-            self.is_valid = False
+                if col == 'X' or col == 'O':
+                    mark_dict[col] = mark_dict.get(col, 0) + 1
+        return mark_dict
 
-    def win(self):
-        pass
+    def winner_dict(self, board):
+        winners_dict = {}
+        if board[0][0] == board[0][1] == board[0][2] != ' ':
+            winners_dict[board[0][0]] = winners_dict.get(board[0][0], 0) + 1
+        if board[1][0] == board[1][1] == board[1][2] != ' ':
+            winners_dict[board[1][0]] = winners_dict.get(board[1][0], 0) + 1
+        if board[2][0] == board[2][1] == board[2][2] != ' ':
+            winners_dict[board[2][0]] = winners_dict.get(board[2][0], 0) + 1
+
+        if board[0][0] == board[1][1] == board[2][2] != ' ':
+            winners_dict[board[0][0]] = winners_dict.get(board[0][0], 0) + 1
+        if board[0][2] == board[1][1] == board[2][0] != ' ':
+            winners_dict[board[0][2]] = winners_dict.get(board[0][2], 0) + 1
+
+        if board[0][0] == board[1][0] == board[2][0] != ' ':
+            winners_dict[board[0][0]] = winners_dict.get(board[0][0], 0) + 1
+        if board[0][1] == board[1][1] == board[2][1] != ' ':
+            winners_dict[board[0][1]] = winners_dict.get(board[0][1], 0) + 1
+        if board[0][2] == board[1][2] == board[2][2] != ' ':
+            winners_dict[board[0][2]] = winners_dict.get(board[0][2], 0) + 1
+
+        return winners_dict
+
+    def validTicTacToe(self, board):
+        winners_dict = self.winner_dict(board)
+        count_dict = self.count_dict(board)
+
+        if len(winners_dict) > 1:
+            return False
+        elif 'O' in winners_dict and count_dict['O'] != count_dict.get('X', 0):
+            return False
+        elif not (count_dict.get('X', 0) - count_dict.get('O', 0) >= 0 and count_dict.get('X', 0) - count_dict.get('O', 0) <= 1):
+            return False
+        elif 'X' in winners_dict and 'X' in count_dict and count_dict['X'] - count_dict.get('O', 0) != 1:
+            return False
+        else:
+            return True
+        
 
 if __name__ == '__main__':
     import doctest
