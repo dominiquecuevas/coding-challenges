@@ -8,8 +8,8 @@
 
 def get_int(num):
     new_num = 0
-    for idx, char in enumerate(num[::-1]):
-        new_char = char + str(0) * idx
+    for idx, char in enumerate(num):
+        new_char = char + str(0) * (len(num) - idx - 1)
         new_num += int(new_char)
     return new_num
 
